@@ -116,7 +116,7 @@
     <!-- Codice per la creazione della tabella libri e i bottoni per eliminare e modificare: -->
     <?php
 
-    include("db.php");
+    include("gestione_db/db.php");
     $conn = connect();
 
     $sql = "SELECT * FROM libri";
@@ -169,7 +169,7 @@
 
     if (mysqli_num_rows($result) > 0) {
 
-        // Contatore totale elementi
+        // Counts total of elements
         $count = mysqli_num_rows($result);
         $search_term = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
         $sort_option = isset($_GET['sort']) ? $_GET['sort'] : '';

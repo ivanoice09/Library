@@ -1,15 +1,15 @@
 <?php
-
 session_start();
+
 // Richiamo connessione DB:
-include("db.php");
+include("gestione_db/db.php");
 $conn = connect();
 
 // Inserimentob dei dati con metodo POST
-$titolo = $_POST['titolo'];
-$autore = $_POST['autore'];
-$num_pagine = $_POST['num_pagine'];
-$date = $_POST['data'];
+$titolo = $_POST['titolo'] ?? '';
+$autore = $_POST['autore'] ?? '';;
+$num_pagine = isset($_POST['num_pagine']) && $_POST['num_pagine'] !== '' ? (int)$_POST['num_pagine'] : 0;
+$date = $_POST['data'] ?? '';
 
 // formattazione data
 try {

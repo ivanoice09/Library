@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("db.php");
+include("gestione_db/db.php");
 $conn = connect();
 
 /*

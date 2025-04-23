@@ -1,6 +1,6 @@
 <?php
 
-include("db.php");
+include("gestione_db/db.php");
 $conn = connect();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -25,7 +25,7 @@ echo '<link href="css/modify-book-styles.css" rel="stylesheet">';
 
 echo '<body>';
 
-echo '<div class="form-title">Elemento che vuoi modificare</div>';
+echo '<div class="form-title">Edit Book Details</div>';
 
 if (mysqli_num_rows($result) > 0) {
     $row = mysqli_fetch_assoc($result);
@@ -39,7 +39,7 @@ if (mysqli_num_rows($result) > 0) {
 
     // Title field
     echo '<label class="form-label">Titolo: </label>';
-    echo '<input type="text" name="titolo" value="' . htmlspecialchars($row['titolo']) . '" class="form-input">';
+    echo '<input type="text" name="titolo" value="' . htmlspecialchars($row['titolo']) . '" class="form-input" reqiured>';
 
     // Author field
     echo '<label class="form-label">Autore: </label>';
