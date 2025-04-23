@@ -38,6 +38,8 @@
 
     <br>
 
+    <h2>Book Records</h2>
+
     <!-- Notifica quando viene aggiunto un nuovo libro -->
     <?php
     if (isset($_GET['messaggio'])) {
@@ -136,7 +138,7 @@
              margin: 25px 0;
              font-size: 0.9em;
              font-family: sans-serif;
-             box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+             box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
              border-radius: 10px;
              overflow: hidden;
          }
@@ -204,7 +206,19 @@
             echo "<td>{$row['titolo']}</td>";
             echo "<td>{$row['autore']}</td>";
             echo "<td>{$row['num_pagine']}</td>";
-            echo "<td>" . date('d/m/Y', strtotime($row['data'])) . "</td>";
+            echo "<td>";
+            if (!empty($row['data'])) {
+                try {
+                    $date = new DateTime($row['data']);
+                    echo $date->format('d/m/Y');
+                } catch (Exception $e) {
+                    // Fallback to simple display if DateTime fails
+                    echo htmlspecialchars($row['data']);
+                }
+            } else {
+                echo '<span class="empty-value">N/A</span>';
+            }
+            echo "</td>";
 
             echo "<td><button type='button' class='btn btn-primary' onclick=\"window.location.href='modifica_elemento.php?id={$row['id']}'\">Modifica</button></td>";
             echo "<td><button type='button' class='btn btn-danger' onclick=\"if(confirm('Sei sicuro di voler eliminare questo elemento?')) window.location.href='elimina_elemento.php?id={$row['id']}'\">Elimina</button></td>";

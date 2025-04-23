@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $result = $stmt->get_result()->fetch_assoc();
 }
 
+// Controllo se ci sono state apportate delle modifiche
+
 if ($result) {
     $stmt = $conn->prepare("UPDATE libri SET titolo=?, autore=?, num_pagine=?, data=? WHERE id=?");
     $stmt->bind_param("ssisi", $titolo, $autore, $num_pagine, $data, $id);

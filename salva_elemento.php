@@ -11,6 +11,16 @@ $autore = $_POST['autore'];
 $num_pagine = $_POST['num_pagine'];
 $date = $_POST['data'];
 
+// formattazione data
+try {
+        $date = new DateTime($date);
+        $formattedDate = $date->format('Y-m-d');
+        echo "Valid date: " . $formattedDate;
+
+} catch(Exception $e) {
+        die("Invalid date: " . $e->getMessage());
+}
+
 // Inserisco dati nel DB:
 $stmt = $conn->prepare("INSERT INTO libri (titolo, autore, num_pagine, data) VALUES (?, ?, ?, ?)");
 $stmt->bind_param("ssis", $titolo, $autore, $num_pagine, $formattedDate);

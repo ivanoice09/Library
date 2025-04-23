@@ -5,7 +5,7 @@ function connect()
     // Connessione database:
     $servername = "localhost";
     $username = "root";
-    $password = "_password";
+    $password = "1234";
     $nomedb = "biblioteca";
 
     $conn = mysqli_connect($servername, $username, $password, $nomedb);
