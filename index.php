@@ -7,14 +7,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='styles.css' rel="stylesheet">
+    <link href='css/index-styles.css' rel="stylesheet">
     <title>Book List</title>
 </head>
 
 <body>
-    <div class="header">
+    <div class="sticky-header">
         <header>
             <h1>The Library</h1>
+            <nav class="menu-nav">
+                <ul>
+                    <li><a href="">Home</a></li>
+                    <li><a href="">Account</a></li>
+                </ul>
+            </nav>
         </header>
     </div>
     <h2>Add a book</h2>
@@ -118,6 +124,22 @@
     }
     ?>
 
+    <div class="search-container" style="margin: 20px auto; max-width: 600px; text-align: center;">
+        <form method="GET" action="">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search books..."
+                    value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                    <?php if (isset($_GET['search']) && !empty($_GET['search'])): ?>
+                        <a href="?" class="btn btn-secondary">Clear</a>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <!-- Codice per la creazione della tabella libri e i bottoni per eliminare e modificare: -->
     <?php
 
@@ -125,70 +147,36 @@
     $conn = connect();
 
     $sql = "SELECT * FROM libri";
+
+    if (isset($_GET['search']) && !empty($_GET['search'])) {
+        $search_term = $conn->real_escape_string($_GET['search']);
+        $sql .= " WHERE titolo LIKE '%$search_term%' 
+                  OR autore LIKE '%$search_term%' 
+                  OR id LIKE '%$search_term%'";
+    }
+
+    // Add sorting if needed (optional)
+    $sql .= " ORDER BY titolo ASC";
+
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
+
+        // Book counter
+        $count = mysqli_num_rows($result);
+        $search_term = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
+        $message = $search_term ?
+            "Found $count books matching \"$search_term\"" :
+            "Showing all $count books";
+
+        echo '<div style="text-align: center; margin: 10px 0 20px; color: #555;">';
+        echo $message;
+        echo '</div>';
+
+        // Structure and Desgin of the book table
+        // echo '<link href="css/index-styles.css" rel="stylesheet">';
         echo '<div class="table-container" style="display: flex; justify-content: center; margin: 20px 0;">';
         echo '<div style="width: 90%; max-width: 1200px;">';
-
-        echo '<style>
-         .book-table {
-             width: 100%;
-             border-collapse: collapse;
-             margin: 25px 0;
-             font-size: 0.9em;
-             font-family: sans-serif;
-             box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-             border-radius: 10px;
-             overflow: hidden;
-         }
-         .book-table thead tr {
-             background-color: #2c3e50;
-             color: #ffffff;
-             text-align: left;
-             font-weight: bold;
-         }
-         .book-table th,
-         .book-table td {
-             padding: 12px 15px;
-             text-align: center;
-         }
-         .book-table tbody tr {
-             border-bottom: 1px solid #dddddd;
-         }
-         .book-table tbody tr:nth-of-type(even) {
-             background-color: #f3f3f3;
-         }
-         .book-table tbody tr:last-of-type {
-             border-bottom: 2px solid #2c3e50;
-         }
-         .book-table tbody tr:hover {
-             background-color: #e1f5fe;
-             cursor: pointer;
-         }
-         .btn {
-             padding: 8px 12px;
-             border: none;
-             border-radius: 4px;
-             font-weight: 600;
-             cursor: pointer;
-             transition: all 0.3s;
-         }
-         .btn-primary {
-             background-color: #3498db;
-             color: white;
-         }
-         .btn-primary:hover {
-             background-color: #2980b9;
-         }
-         .btn-danger {
-             background-color: #e74c3c;
-             color: white;
-         }
-         .btn-danger:hover {
-             background-color: #c0392b;
-         }
-        </style>';
 
         echo "<table class='book-table'>";
         echo "<thead><tr>";

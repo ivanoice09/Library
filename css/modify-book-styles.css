@@ -1,30 +1,9 @@
 body {
-    width: 100%;
-    height: 100vh;
-    margin: 0;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    font-size: 16px;
 }
 
-.header {
-    position: sticky;
-    padding: 10px 30px;
-    top: 0;
-    background-color: #639FAB;
-    z-index: 1000;
-    color: white;
-}
-
-h1 {
-    font-size: 30px;
-}
-
-h2 {
-    text-align: center;
-    font-size: 30px;
-}
-
-form {
+/* Form Container */
+.form-container {
     width: 60vw;
     max-width: 600px;
     min-width: 300px;
@@ -35,7 +14,15 @@ form {
     border-bottom: 2px solid #76949F;
 }
 
-fieldset {
+/* Form Title */
+.form-title {
+    text-align: center;
+    margin: 2rem;
+    font-size: 1.5rem;
+}
+
+/* Fieldset Styling */
+.form-fieldset {
     border: none;
     padding: 0;
     margin: 0 auto;
@@ -45,7 +32,8 @@ fieldset {
     width: 100%;
 }
 
-label {
+/* Form Labels */
+.form-label {
     font-size: 18px;
     display: block;
     margin: 0.8rem 0 0.3rem;
@@ -54,7 +42,8 @@ label {
     text-align: left;
 }
 
-input:not([type="submit"]) {
+/* Form Inputs */
+.form-input {
     margin: 0;
     width: 80%;
     max-width: 400px;
@@ -65,12 +54,13 @@ input:not([type="submit"]) {
     box-sizing: border-box;
 }
 
-input:not([type="submit"]):focus {
+.form-input:focus {
     outline: 2px solid #639FAB;
     border-color: transparent;
 }
 
-input[type="submit"] {
+/* Submit Button */
+.form-submit {
     display: block;
     width: 80%;
     max-width: 400px;
@@ -85,6 +75,13 @@ input[type="submit"] {
     transition: background-color 0.2s;
 }
 
-input[type="submit"]:hover {
+.form-submit:hover {
     background-color: #4d8a96;
+}
+
+/* Error Message */
+.error-message {
+    text-align: center;
+    color: #d9534f;
+    margin: 1rem 0;
 }
