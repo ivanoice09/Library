@@ -2,7 +2,7 @@
 
 session_start();
 // Richiamo connessione DB:
-include("db.php");
+include("gestione-db/db.php");
 $conn = connect();
 
 // Inserimentob dei dati con metodo POST
@@ -36,13 +36,13 @@ if ($stmt->execute() === TRUE) {
         if ($result && $result->num_rows > 0) {
                 $row = $result->fetch_assoc();
                 $_SESSION['last_id'] = $row['id'];
-                $last_id = $row['id']; // MI SERVE QUESTO ID PER IL LOG
+                $last_id = $row['id']; // mi serve per il payload
 
         } else {
                 echo "Record non trovato";
         }
 
-        // Faccio un select per prendere i dati 
+        // Faccio un select per prendere il PAYLOAD dell'utente appena creato
         $stmt = $conn->prepare("SELECT * FROM libri WHERE id=?");
         $stmt->bind_param("i", $last_id);
         $stmt->execute();

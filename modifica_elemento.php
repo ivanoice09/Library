@@ -1,6 +1,6 @@
 <?php
 
-include("db.php");
+include("gestione-db/db.php");
 $conn = connect();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {

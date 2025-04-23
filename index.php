@@ -24,24 +24,25 @@
         </header>
     </div>
     <h2>Add a book</h2>
-    <form action="salva_elemento.php" method="POST">
-        <fieldset>
-            <label for="titolo">Title: </label>
-            <input type="text" name="titolo" id="titolo" required>
+    <div class="new-book-form">
+        <form action="salva_elemento.php" method="POST">
+            <fieldset>
+                <label for="titolo">Title: </label>
+                <input type="text" name="titolo" id="titolo" required>
 
-            <label for="autore">Author: </label>
-            <input type="text" name="autore" id="autore" required>
+                <label for="autore">Author: </label>
+                <input type="text" name="autore" id="autore" required>
 
-            <label for="num_pagine">N° Pages: </label>
-            <input type="number" name="num_pagine" id="num_pagine" required>
+                <label for="num_pagine">N° Pages: </label>
+                <input type="number" name="num_pagine" id="num_pagine" required>
 
-            <label for="data">Date of release: </label>
-            <input type="date" name="data" id="data" required>
-        </fieldset>
+                <label for="data">Date of release: </label>
+                <input type="date" name="data" id="data" required>
+            </fieldset>
 
-        <input type="submit" value="Add">
-    </form>
-
+            <input type="submit" value="Add">
+        </form>
+    </div>
     <br>
 
     <h2>Book Records</h2>
@@ -55,54 +56,6 @@
         $message = $_SESSION['popup_message'] ?? null;
     }
     if ($message && $message !== null) {
-        echo '<style>
-            .notification {
-                position: fixed;
-                top: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                padding: 15px 25px;
-                background-color: #4CAF50;
-                color: white;
-                border-radius: 5px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                min-width: 300px;
-                max-width: 80%;
-                z-index: 1000;
-                animation: slideIn 0.5s, fadeOut 0.5s 3.5s forwards;
-            }
-            .notification.error {
-                background-color: #f44336;
-            }
-            .notification.warning {
-                background-color: #ff9800;
-            }
-            .notification.info {
-                background-color: #2196F3;
-            }
-            .close-btn {
-                margin-left: 15px;
-                color: white;
-                font-weight: bold;
-                font-size: 18px;
-                cursor: pointer;
-                opacity: 0.8;
-            }
-            .close-btn:hover {
-                opacity: 1;
-            }
-            @keyframes slideIn {
-                from {top: -50px; opacity: 0;}
-                to {top: 20px; opacity: 1;}
-            }
-            @keyframes fadeOut {
-                from {opacity: 1;}
-                to {opacity: 0; visibility: hidden;}
-            }
-        </style>';
 
         // Determine notification type based on message content
         $type = 'info';
@@ -124,18 +77,38 @@
     }
     ?>
 
-    <div class="search-container" style="margin: 20px auto; max-width: 600px; text-align: center;">
+    <!-- Search bar logic -->
+    <div class="search-container">
         <form method="GET" action="">
-            <div class="input-group">
-                <input type="text" class="form-control" name="search" placeholder="Search books..."
-                    value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+            <div class="input-style">
 
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">Search</button>
-                    <?php if (isset($_GET['search']) && !empty($_GET['search'])): ?>
-                        <a href="?" class="btn btn-secondary">Clear</a>
-                    <?php endif; ?>
+                <!-- Search input -->
+                <div class="input-group">
+                    <input type="text" class="form-control" name="search" placeholder="Search books..."
+                        value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>" required>
+
+                    <div class="input-group-append">
+                        <button class="btn_search btn-primary" type="submit">Search</button>
+                        <?php if (isset($_GET['search']) && !empty($_GET['search'])): ?>
+                            <a href="?" class="btn_search btn-secondary">Clear</a>
+                        <?php endif; ?>
+                    </div>
                 </div>
+
+                <div class="sort-group">
+                    <select name="sort" class="form-control" onchange="this.form.submit()">
+                        <option value="">Sort by...</option>
+                        <option value="titolo_asc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'titolo_asc') ? 'selected' : '' ?>>Title (A-Z)</option>
+                        <option value="titolo_desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'titolo_desc') ? 'selected' : '' ?>>Title (Z-A)</option>
+                        <option value="data_asc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'data_asc') ? 'selected' : '' ?>>Release Date (Oldest)</option>
+                        <option value="data_desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'data_desc') ? 'selected' : '' ?>>Release Date (Newest)</option>
+                        <option value="autore_asc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'autore_asc') ? 'selected' : '' ?>>Author (A-Z)</option>
+                        <option value="autore_desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'autore_desc') ? 'selected' : '' ?>>Author (Z-A)</option>
+                        <option value="pagine_asc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'pagine_asc') ? 'selected' : '' ?>>Pages (Fewest)</option>
+                        <option value="pagine_desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'pagine_desc') ? 'selected' : '' ?>>Pages (Most)</option>
+                    </select>
+                </div>
+
             </div>
         </form>
     </div>
@@ -143,33 +116,84 @@
     <!-- Codice per la creazione della tabella libri e i bottoni per eliminare e modificare: -->
     <?php
 
-    include("db.php");
+    include("gestione-db/db.php");
     $conn = connect();
 
     $sql = "SELECT * FROM libri";
 
+    // Controllo se è possibile effettuare la ricerca avendo i requisiti richiesti dall'utente
     if (isset($_GET['search']) && !empty($_GET['search'])) {
         $search_term = $conn->real_escape_string($_GET['search']);
-        $sql .= " WHERE titolo LIKE '%$search_term%' 
-                  OR autore LIKE '%$search_term%' 
+        $sql .= " WHERE LOWER(titolo) LIKE LOWER('%$search_term%') 
+                  OR LOWER(autore) LIKE LOWER('%$search_term%') 
                   OR id LIKE '%$search_term%'";
     }
 
-    // Add sorting if needed (optional)
-    $sql .= " ORDER BY titolo ASC";
+    // Add sorting based on selection
+    if (isset($_GET['sort']) && !empty($_GET['sort'])) {
+        $sort_option = $_GET['sort'];
+        switch ($sort_option) {
+            case 'titolo_asc':
+                $sql .= " ORDER BY titolo ASC";
+                break;
+            case 'titolo_desc':
+                $sql .= " ORDER BY titolo DESC";
+                break;
+            case 'data_asc':
+                $sql .= " ORDER BY data ASC";
+                break;
+            case 'data_desc':
+                $sql .= " ORDER BY data DESC";
+                break;
+            case 'autore_asc':
+                $sql .= " ORDER BY autore ASC";
+                break;
+            case 'autore_desc':
+                $sql .= " ORDER BY autore DESC";
+                break;
+            case 'pagine_asc':
+                $sql .= " ORDER BY num_pagine ASC";
+                break;
+            case 'pagine_desc':
+                $sql .= " ORDER BY num_pagine DESC";
+                break;
+            default:
+                $sql .= " ORDER BY titolo ASC";
+        }
+    } else {
+        // Default sorting if none selected
+        $sql .= " ORDER BY titolo ASC";
+    }
 
     $result = mysqli_query($conn, $sql);
 
     if (mysqli_num_rows($result) > 0) {
 
-        // Book counter
+        // Contatore totale elementi
         $count = mysqli_num_rows($result);
         $search_term = isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '';
+        $sort_option = isset($_GET['sort']) ? $_GET['sort'] : '';
+
         $message = $search_term ?
             "Found $count books matching \"$search_term\"" :
             "Showing all $count books";
 
-        echo '<div style="text-align: center; margin: 10px 0 20px; color: #555;">';
+        // Add sorting info if sorted
+        if ($sort_option) {
+            $sort_map = [
+                'titolo_asc' => 'sorted by title (A-Z)',
+                'titolo_desc' => 'sorted by title (Z-A)',
+                'data_asc' => 'sorted by release date (oldest first)',
+                'data_desc' => 'sorted by release date (newest first)',
+                'autore_asc' => 'sorted by author (A-Z)',
+                'autore_desc' => 'sorted by author (Z-A)',
+                'pagine_asc' => 'sorted by page count (fewest first)',
+                'pagine_desc' => 'sorted by page count (most first)'
+            ];
+            $message .= ' - ' . $sort_map[$sort_option];
+        }
+
+        echo '<div class="book-counter">';
         echo $message;
         echo '</div>';
 
