@@ -5,38 +5,11 @@ session_start();
 include("db.php");
 $conn = connect();
 
-// Inserimento e validazione dei dati con metodo POST
-$titolo = $_POST['titolo'] ?? '';
-$autore = $_POST['autore'] ?? '';
-$num_pagine = isset($_POST['num_pagine']) && $_POST['num_pagine'] !== '' ? (int)$_POST['num_pagine'] : 0;
-$date = $_POST['data'] ?? '';
-
-// Validazione dei campi obbligatori
-$errors = [];
-
-if (empty($titolo)) {
-        $errors[] = "Il titolo è obbligatorio";
-}
-if (empty($autore)) {
-        $errors[] = "L'autore è obbligatorio";
-}
-if (empty($date)) {
-        $errors[] = "La data è obbligatoria";
-}
-
-if (!empty($errors)) {
-        $errorMessage = urlencode(implode("<br>", $errors));
-        header("Location: index.php?error=" . $errorMessage);
-        exit();
-}
-
-try {
-        $date = new DateTime($date);
-        $formattedDate = $date->format('Y-m-d');
-        echo "Valid date: " . $formattedDate;
-} catch (Exception $e) {
-        die("Invalid date: " . $e->getMessage());
-}
+// Inserimentob dei dati con metodo POST
+$titolo = $_POST['titolo'];
+$autore = $_POST['autore'];
+$num_pagine = $_POST['num_pagine'];
+$date = $_POST['data'];
 
 // Inserisco dati nel DB:
 $stmt = $conn->prepare("INSERT INTO libri (titolo, autore, num_pagine, data) VALUES (?, ?, ?, ?)");

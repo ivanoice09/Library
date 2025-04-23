@@ -1,3 +1,71 @@
-.container.card.card-header {
-    font-size: 40px;
+body {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 16px;
+}
+
+.header {
+    position: sticky;
+    padding: 10px 30px;
+    top: 0;
+    background-color: #639FAB;
+    z-index: 1000;
+    color: white;
+}
+
+h1 {
+    font-size: 30px;
+}
+
+h2 {
+    text-align: center;
+    font-size: 30px;
+}
+
+form {
+    width: 60vw;
+    max-width: 600px;
+    min-width: 300px;
+    margin: 30px auto;
+    border-radius: 16px;
+    background-color: #BBCDE5;
+    padding-bottom: 1em;
+    border-bottom: 2px solid #3b3b4f;
+}
+
+fieldset {
+    border: none;
+    padding: 1rem 5rem;
+}
+
+label {
+    font-size: 18px;
+    display: block;
+    margin: 0.5rem 0;
+}
+
+input {
+    margin: 3px 0 0 0;
+    width: 100%;
+    min-height: 2em;
+}
+
+input[type="submit"] {
+    display: block;
+    width: 30%;
+    margin: 1em auto;
+    height: 2em;
+    font-size: 1.1rem;
+    background-color: #639FAB;
+    border-color: white;
+    min-width: 300px;
+    border-radius: 8px;
+    color: white;
+}
+
+.table {
+    width: 300;
+    margin: 0 auto;
 }
