@@ -2,7 +2,7 @@
 
 session_start();
 // Richiamo connessione DB:
-include("gestione-db/db.php");
+include("db.php");
 $conn = connect();
 
 // Inserimentob dei dati con metodo POST

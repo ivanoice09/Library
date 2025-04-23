@@ -1,7 +1,7 @@
 <?php
 
 session_start();
-include("gestione-db/db.php");
+include("db.php");
 $conn = connect();
 
 // check del metodo di richiesta della pagina vuol dire che sto cercando di salvare il dato

@@ -116,7 +116,7 @@
     <!-- Codice per la creazione della tabella libri e i bottoni per eliminare e modificare: -->
     <?php
 
-    include("gestione-db/db.php");
+    include("db.php");
     $conn = connect();
 
     $sql = "SELECT * FROM libri";
