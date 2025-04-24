@@ -5,7 +5,7 @@ function connect()
     // Connessione database:
     $servername = "localhost";
     $username = "root";
-    $password = "_password";
+    $password = "1234";
     $nomedb = "biblioteca";
 
     $conn = mysqli_connect($servername, $username, $password, $nomedb);
@@ -16,4 +16,12 @@ function connect()
     }
 
     return $conn;
+}
+
+// Prevent directory traversal
+function sanitizePath($path)
+{
+    $path = str_replace('../', '', $path);
+    $path = str_replace('..\\', '', $path);
+    return $path;
 }

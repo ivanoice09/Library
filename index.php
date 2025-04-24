@@ -25,7 +25,7 @@
     </div>
     <h2>Add a book</h2>
     <div class="new-book-form">
-        <form action="salva_elemento.php" method="POST">
+        <form action="salva_elemento.php" method="POST" enctype="multipart/form-data">
             <fieldset>
                 <label for="titolo">Title: </label>
                 <input type="text" name="titolo" id="titolo" required>
@@ -38,6 +38,11 @@
 
                 <label for="data">Date of release: </label>
                 <input type="date" name="data" id="data" required>
+
+                <div class="form-group">
+                    <label for="pdf_file">Upload PDF (Max 5MB):</label>
+                    <input type="file" class="form-control" id="pdf_file" name="pdf_file" accept=".pdf" required>
+                </div>
             </fieldset>
 
             <input type="submit" value="Add">
@@ -162,7 +167,7 @@
         }
     } else {
         // Default sorting if none selected
-        $sql .= " ORDER BY titolo ASC";
+        $sql .= " ORDER BY id";
     }
 
     $result = mysqli_query($conn, $sql);
@@ -198,7 +203,6 @@
         echo '</div>';
 
         // Structure and Desgin of the book table
-        // echo '<link href="css/index-styles.css" rel="stylesheet">';
         echo '<div class="table-container" style="display: flex; justify-content: center; margin: 20px 0;">';
         echo '<div style="width: 90%; max-width: 1200px;">';
 
@@ -232,6 +236,14 @@
             }
             echo "</td>";
 
+            // PDF View Button
+            echo "<td>";
+            if (!empty($row['file'])) {
+                echo "<button type=\"button\" class=\"btn btn-info\" onclick=\"window.open('view_pdf.php?id={$row['id']}', '_blank')\">View PDF</button>";
+            } else {
+                echo "<span class=\"empty-value\">No PDF</span>";
+            }
+            echo "</td>";
             echo "<td><button type='button' class='btn btn-primary' onclick=\"window.location.href='modifica_elemento.php?id={$row['id']}'\">Modifica</button></td>";
             echo "<td><button type='button' class='btn btn-danger' onclick=\"if(confirm('Sei sicuro di voler eliminare questo elemento?')) window.location.href='elimina_elemento.php?id={$row['id']}'\">Elimina</button></td>";
             echo "</tr>";

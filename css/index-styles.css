@@ -255,6 +255,15 @@ input[type="submit"]:hover {
     transition: all 0.3s;
 }
 
+.btn-info {
+    background-color: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+}
+
 .btn-primary {
     background-color: #3498db;
     color: white;

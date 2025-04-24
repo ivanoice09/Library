@@ -4,7 +4,18 @@ include("gestione_db/db.php");
 $conn = connect();
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $id = intval($_GET['id']);
     $id = $_GET['id'];
+
+    // First get the file path
+    $sql = "SELECT file FROM books WHERE id = $id";
+    $result = $conn->query($sql);
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if (!empty($row['file']) && file_exists($row['file'])) {
+            unlink($row['file']);
+        }
+    }
 
     // Faccio un select per prendere i dati 
     $stmt = $conn->prepare("SELECT * FROM libri WHERE id=?");
@@ -28,7 +39,6 @@ if ($result) {
         $_SESSION['payload'] = $result;
         header("location: log_table.php");
         exit();
-
     } else {
         echo "Error deleting record: " . $conn->error;
     }
